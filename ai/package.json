@@ -1,0 +1,19 @@
+{
+  "name": "nexus-market-ai",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "train": "node train.js",
+    "predict": "node predict.js",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@tensorflow/tfjs-node": "^4.17.0",
+    "natural": "^6.10.4",
+    "compromise": "^14.10.0",
+    "node-nlp": "^4.27.0",
+    "chart.js": "^4.4.1",
+    "csv-parse": "^5.5.3",
+    "csv-stringify": "^6.4.5"
+  }
+}

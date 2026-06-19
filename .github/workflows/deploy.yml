@@ -1,0 +1,136 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+    branches: [main]
+
+env:
+  NODE_VERSION: '18'
+
+jobs:
+
+  # ─── Frontend: lint + build ─────────────────────────────
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - run: npm ci --no-fund --no-audit
+
+      - run: npm run lint
+        continue-on-error: true
+
+      - run: npm run build
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: frontend/dist
+
+  # ─── Backend: install + test ────────────────────────────
+  backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+
+      - run: npm ci --no-fund --no-audit
+
+      - run: npm test
+
+  # ─── Deploy: GitHub Pages ───────────────────────────────
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    needs: [frontend, backend]
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
+
+  # ─── Release: quando criar tag v* ───────────────────────
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [frontend, backend]
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install frontend deps + build
+        working-directory: frontend
+        run: |
+          npm ci --no-fund --no-audit
+          npm run build
+
+      - name: Cache Inno Setup
+        id: cache-iscc
+        uses: actions/cache@v4
+        with:
+          path: C:\Program Files (x86)\Inno Setup 6
+          key: inno-setup-6
+
+      - name: Install Inno Setup
+        if: steps.cache-iscc.outputs.cache-hit != 'true'
+        run: |
+          choco install innosetup --no-progress --yes
+        shell: powershell
+
+      - name: Compile installer
+        working-directory: Installer
+        run: |
+          & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" nexus-installer.iss
+        shell: powershell
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nexus-installer
+          path: Installer/output/*.exe
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: NEXUS Market AI ${{ github.ref_name }}
+          body: |
+            ## NEXUS Market AI ${{ github.ref_name }}
+
+            ### Instalação
+            Baixe o instalador abaixo (`nexus-market-ai-setup-*.exe`) e execute como Administrador.
+
+            ### Requisitos
+            - Windows 10/11
+            - [Node.js 18+](https://nodejs.org/)
+            - (Opcional) PostgreSQL 14+ para modo servidor
+
+            ### Novidades
+            - Veja o changelog completo no [repositório](https://github.com/lucbruna/nexus-market).
+          files: Installer/output/*.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

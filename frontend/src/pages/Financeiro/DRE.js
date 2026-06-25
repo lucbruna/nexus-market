@@ -8,10 +8,10 @@ export class DRE {
       <div class="kpi-grid" id="dre-kpis-top"></div>
       <div class="grid-2">
         <div class="card"><div class="card-title">Demonstracao do Resultado</div><div id="dre-tabela"></div></div>
-        <div class="card"><div class="card-title">Composicao do Resultado</div><canvas id="dre-chart-composicao" height="250"></canvas></div>
+        <div class="card"><div class="card-title">Composicao do Resultado</div><div class="chart-wrapper"><canvas id="dre-chart-composicao"></canvas></div></div>
       </div>
       <div class="grid-2 mt-16">
-        <div class="card"><div class="card-title">Evolucao Mensal</div><canvas id="dre-chart-evolucao" height="250"></canvas></div>
+        <div class="card"><div class="card-title">Evolucao Mensal</div><div class="chart-wrapper"><canvas id="dre-chart-evolucao"></canvas></div></div>
         <div class="card"><div class="card-title">Indicadores</div><div id="dre-indicadores"></div></div>
       </div>
       <div class="card mt-16"><div class="card-title">Analise Detalhada</div><div id="dre-analise"></div></div>

@@ -157,7 +157,7 @@ export class PDV {
   renderProducts(lista) {
     const el = document.getElementById('pdv-products')
     el.innerHTML = lista.map(p => `
-      <button class="prod-card-pro" onclick="window.pdv.addToCart(${p.id})">
+      <button class="prod-card-pro" tabindex="-1" data-prod-id="${p.id}" onclick="window.pdv.addToCart(${p.id})">
         <span class="pro-card-header">
           <span class="pro-card-cod">${escapeHtml(p.codigo || p.ean || '')}</span>
           <span class="pro-card-stock ${(p.estoque || 0) <= 0 ? 'out' : (p.estoque || 0) <= (p.estMin || 5) ? 'low' : ''}">${p.estoque || 0}</span>
@@ -167,6 +167,22 @@ export class PDV {
         <span class="pro-card-unit">${escapeHtml(p.unidade || 'UN')}</span>
       </button>
     `).join('') || '<div class="empty-state"><p>Nenhum produto encontrado</p></div>'
+    el.addEventListener('keydown', e => {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+        e.preventDefault()
+        const next = e.target.nextElementSibling
+        if (next && next.matches('.prod-card-pro')) next.focus()
+      }
+      if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+        e.preventDefault()
+        const prev = e.target.previousElementSibling
+        if (prev && prev.matches('.prod-card-pro')) prev.focus()
+      }
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault()
+        if (e.target.matches('.prod-card-pro')) e.target.click()
+      }
+    })
   }
 
   filtrarCategoria(cat) {
@@ -190,13 +206,26 @@ export class PDV {
   }
 
   pdvKey(e) {
-    if (e.key !== 'Enter') return
     const q = e.target.value.trim()
-    const found = this.allProdutos.find(p => p.ean === q || p.codigo === q)
-    if (found) {
-      this.addToCart(found.id)
-      e.target.value = ''
-      this.applyProductFilter()
+    if (e.key === 'Enter') {
+      const found = this.allProdutos.find(p => p.ean === q || p.codigo === q)
+      if (found) {
+        this.addToCart(found.id)
+        e.target.value = ''
+        this.applyProductFilter()
+        return
+      }
+      const firstBtn = document.querySelector('#pdv-products .prod-card-pro')
+      if (firstBtn) { firstBtn.click(); e.target.value = ''; this.applyProductFilter() }
+      return
+    }
+    if (e.key === 'F2') { this.clearCart(); e.preventDefault(); return }
+    if (e.key === 'F8') { document.getElementById('btn-finalizar')?.click(); e.preventDefault(); return }
+    if (e.key === 'Escape') { e.target.value = ''; this.applyProductFilter(); e.target.focus(); return }
+    if (e.key === 'ArrowDown') {
+      e.preventDefault()
+      const first = document.querySelector('#pdv-products .prod-card-pro')
+      if (first) first.focus()
     }
   }
 

@@ -74,6 +74,8 @@ body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-ser
 .kpi.blue .kpi-value { color: var(--blue); }
 .kpi.purple .kpi-value { color: var(--purple); }
 
+.chart-wrapper { position: relative; height: 220px; }
+.chart-wrapper canvas { width: 100% !important; height: 100% !important; }
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
 .col-span-2 { grid-column: span 2; }

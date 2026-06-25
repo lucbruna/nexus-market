@@ -7,8 +7,8 @@ export class Relatorios {
       <div class="section-header"><h2>Relatorios Gerenciais</h2></div>
       <div class="kpi-grid" id="rel-kpis"></div>
       <div class="grid-2">
-        <div class="card"><div class="card-title">Vendas x Despesas (ultimos meses)</div><canvas id="rel-chart-evolucao" height="250"></canvas></div>
-        <div class="card"><div class="card-title">Composicao de vendas por forma pagamento</div><canvas id="rel-chart-pagamento" height="250"></canvas></div>
+        <div class="card"><div class="card-title">Vendas x Despesas (ultimos meses)</div><div class="chart-wrapper"><canvas id="rel-chart-evolucao"></canvas></div></div>
+        <div class="card"><div class="card-title">Composicao de vendas por forma pagamento</div><div class="chart-wrapper"><canvas id="rel-chart-pagamento"></canvas></div></div>
       </div>
       <div class="grid-2 mt-16">
         <div class="card"><div class="card-title">Top produtos por faturamento</div><div id="rel-top-produtos"></div></div>

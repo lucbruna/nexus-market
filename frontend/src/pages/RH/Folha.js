@@ -13,8 +13,8 @@ export class Folha {
       </div>
       <div class="kpi-grid" id="folha-kpis"></div>
       <div class="grid-2 mt-16">
-        <div class="card"><div class="card-title">Proventos</div><canvas id="folha-chart-proventos" height="200"></canvas></div>
-        <div class="card"><div class="card-title">Descontos</div><canvas id="folha-chart-descontos" height="200"></canvas></div>
+        <div class="card"><div class="card-title">Proventos</div><div class="chart-wrapper"><canvas id="folha-chart-proventos"></canvas></div></div>
+        <div class="card"><div class="card-title">Descontos</div><div class="chart-wrapper"><canvas id="folha-chart-descontos"></canvas></div></div>
       </div>
       <div class="card mt-16"><div class="card-title">Registros completos da folha</div><div id="folha-table-wrap"></div></div>
     `

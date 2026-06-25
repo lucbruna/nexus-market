@@ -8,7 +8,7 @@ on:
     branches: [main]
 
 env:
-  NODE_VERSION: '18'
+  NODE_VERSION: '20'
 
 jobs:
 
@@ -34,8 +34,8 @@ jobs:
 
       - run: npm run build
 
-       - uses: actions/upload-artifact@v4
-         with:
+      - uses: actions/upload-artifact@v4
+        with:
           name: github-pages
           path: frontend/dist
 

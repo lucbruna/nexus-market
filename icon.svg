@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0EA5E9"/>
+      <stop offset="100%" style="stop-color:#059669"/>
+    </linearGradient>
+    <linearGradient id="cart" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFFFFF"/>
+      <stop offset="100%" style="stop-color:#E2E8F0"/>
+    </linearGradient>
+  </defs>
+  <!-- Fundo arredondado -->
+  <rect x="32" y="32" width="448" height="448" rx="96" ry="96" fill="url(#bg)"/>
+  <!-- Carrinho de compras estilizado -->
+  <g fill="url(#cart)" transform="translate(256,260)">
+    <!-- Corpo do carrinho -->
+    <path d="M-120,-40 L-130,-20 L-100,-20 L-70,80 L110,80 L140,-20 L170,-20 L160,-40 Z"/>
+    <!-- Roda esquerda -->
+    <circle cx="-60" cy="100" r="22"/>
+    <circle cx="-60" cy="100" r="10" fill="#0EA5E9"/>
+    <!-- Roda direita -->
+    <circle cx="100" cy="100" r="22"/>
+    <circle cx="100" cy="100" r="10" fill="#0EA5E9"/>
+    <!-- Linhas de produto -->
+    <rect x="-50" y="10" width="140" height="14" rx="7"/>
+    <rect x="-50" y="36" width="120" height="14" rx="7"/>
+    <rect x="-50" y="62" width="100" height="14" rx="7"/>
+  </g>
+  <!-- Letra N sutil no canto -->
+  <text x="380" y="420" font-family="Arial,Helvetica,sans-serif" font-weight="bold" font-size="80" fill="white" opacity="0.3">N</text>
+</svg>
